@@ -1,0 +1,115 @@
+<!-- Property Binding . Es la manera que dispone Angular para controlar y modificar las propiedades de los distintos elementos de HTML. 
+Para esto, simplemente utiliza los corchetes [] para poder modificar dinámicamente ese atributo desde el controlador. -->
+
+<!-- El atributo src de la etiqueta <img> para modificar dinámicamente una imagen.
+El atributo href de un <a> para modificar un enlace.
+El atributo value de un <input> para autocompletar un valor de un formulario.
+El atributo disable de un <input> para habilitar/deshabilitar un campo de un formulario. -->
+
+<div class="container">
+    <p>labs works!</p>
+    <h2>{{welcome}}</h2>    
+    <h2>{{ 'Hola'.repeat(4) }}</h2>
+    <p>
+        La suma de 3+3 es {{ 3 + 3 }}
+    </p>
+    
+    <img [src]="imgUrl" alt="">
+    <br/>
+    <input type="tel" [value]="person.name"/>
+    <button [disabled]="btnDisable">Click Me</button>
+    <hr />
+    
+    <!-- Event Binding . Permite controlar los eventos que suceden en estos elementos. 
+    Por ejemplo, el clic de un botón, detectar cambios en un campo, el envío de un formulario, entre otros eventos. 
+    Para esto utiliza los paréntesis () para el bindeo de la propiedad del elemento. -->
+    
+    <button (click)="clickHandler()">Presionar porfa</button><br/>
+    <button (dblclick)="clickHandler()">Presionar dos veces porfa</button>
+    <p>(change)</p>
+    <input (change)="changeHandler($event)" [value]="person.name" />
+
+    <p>(keydown)</p>
+    <input (keydown)="keydownHandler($event)" [value]="person.name" />
+    <input (keydown.shift.t)="clickHandler()" [value]="person.name" />
+    <hr />
+
+    <p>Signals</p>
+    <h2>Hola, soy {{name()}}</h2>
+    <input (change)="changeHandler($event)" [value]="name()" />
+
+    <!-- Estructura de control -->
+    <hr />
+    <label>Total: {{ tasks().length }}</label>
+    <ul>
+        <li *ngFor="let task of tasks(); index as i">
+            {{ i }} {{ task }}
+        </li>
+        <hr />
+        <li *ngFor="let task of tasks()">
+            {{ task }}
+        </li>
+    </ul>
+    <hr />
+
+    <div *ngIf="1 !== 1; else elseMiBlock">
+        Mi contenido IF
+    </div>
+    <ng-template #elseMiBlock>
+        El if no se cumple
+    </ng-template>
+    <hr/>
+
+    <div [ngSwitch]="name()">
+        <p *ngSwitchCase="'nicolas'">Soy nicolas</p>
+        <p *ngSwitchCase="'ricado'">Soy ricado</p>
+        <p *ngSwitchDefault>No estoy en el listado</p>
+    </div>
+    <hr />
+
+    <!-- Nuevas sintaxis -->
+    <!--
+        Para migrar se puede hacer lo siguiente
+        ng g @angular/core:control-flow
+    -->
+    @if (1 === 1) {
+        <div>Mi contenido IF 2</div>
+    } @else {
+        <div>Mi IF dos</div>
+    }
+    <ul>
+        @for (task of tasks(); track task; let i = $index) {
+            <li>{{ i }} {{ task }}</li>
+        } @empty {
+            <li>La lista esta vacia</li>
+        }
+    </ul>
+    @switch (name()) {
+        @case ('nicolas') { <p>Soy nicolas</p> }
+        @case ('ricado') { <p>Soy ricado</p> }
+        @default { <p>No estoy en la lista</p> }
+    }
+
+    
+
+    <input type="color" [formControl]="colorCtrl" />
+    <p>Color: {{ colorCtrl.value }}</p>
+    <svg>
+        <g>
+            <rect x="0" y="0" height="100" width="100" [attr.fill]="colorCtrl.value" />
+        </g>
+    </svg>
+    <hr />
+
+    <input type="number" [formControl]="widthCtrl" />
+    <span class="box" [style.width.px]="widthCtrl.value"></span>
+    <hr/>
+
+    <p>
+        <input type="text" [formControl]="nameCtrl" /><br />
+        <span class="message-error" [class.show]="nameCtrl.invalid && nameCtrl.touched">Texto invalido</span>
+    </p>
+    <p>
+        <input type="text" [formControl]="nameCtrl" /><br />
+    </p>
+</div>
